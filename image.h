@@ -27,4 +27,6 @@ void hello_world(Image* image);
 void mod_image(Image* image);
 Image* load(char* filename);
 void mandelbrot(Image* image, complex z_min, complex z_max, int maxIterations);
+void julia(Image* image, complex c, complex z_min, complex z_max, int maxIterations);
+void mandelbrot_p2(Image* image, complex z_min, complex z_max, int maxIterations);
 #endif

@@ -197,3 +197,84 @@ void mandelbrot(Image* image, complex z_min, complex z_max, int maxIterations)
         }
     }
 }
+
+void mandelbrot_p2(Image* image, complex z_min, complex z_max, int maxIterations) 
+{
+    int h = image->height;
+    int w = image->width;
+    double delta_re = (z_max.re - z_min.re) / w;
+    double delta_im = (z_max.im - z_min.im) / h;
+
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            complex z;
+            z.re = z_min.re + j * delta_re;
+            z.im = z_min.im + i * delta_im;
+
+            complex x;
+            x.re = x.im = 0.0;
+
+            int iteration = 0;
+            while (x.re * x.re + x.im * x.im <= 4 && iteration < maxIterations) {
+                double x_re_squared = x.re * x.re;
+                double x_im_squared = x.im * x.im;
+
+                x = (complex){x_re_squared - x_im_squared + z.re, 2 * x.re * x.im + z.im};
+
+                iteration++;
+            }
+
+            Pixel color;
+            double color_value = 1.0 + 254.99 * iteration / maxIterations;
+            if (x.re * x.re + x.im * x.im <= 4) {
+                color = (Pixel){0, 0, 0};
+            } else {
+                color = (Pixel){(uint8_t)color_value, (uint8_t)color_value, (uint8_t)color_value};
+            }
+
+            image->pixels[i * w + j] = color;
+        }
+    }
+}
+
+void julia(Image* image, complex c, complex z_min, complex z_max, int maxIterations)
+{
+    int h = image->height;
+    int w = image->width;
+    double delta_re = (z_max.re - z_min.re) / w;
+    double delta_im = (z_max.im - z_min.im) / h;
+
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            complex z;
+            z.re = z_min.re + j * delta_re;
+            z.im = z_min.im + i * delta_im;
+
+            complex x;
+            x.re = z.re;
+            x.im = z.im;
+
+            int iteration = 0;
+            while (x.re * x.re + x.im * x.im <= 4 && iteration < maxIterations) {
+                double x_re_temp = x.re * x.re - x.im * x.im + c.re;
+                x.im = 2 * x.re * x.im + c.im;
+                x.re = x_re_temp;
+
+                iteration++;
+            }
+
+            Pixel color;
+            if (iteration == maxIterations) {
+                color.r = color.g = color.b = 0;
+            } else {
+                color.r = (uint8_t)(1.0 + 254.99 * iteration / maxIterations);
+                color.g = (uint8_t)(1.0 + 254.99 * iteration / maxIterations);
+                color.b = (uint8_t)(1.0 + 254.99 * iteration / maxIterations);
+            }
+
+            image->pixels[i * w + j] = color;
+        }
+    }
+}
+
+
