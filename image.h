@@ -14,6 +14,17 @@ typedef struct{
     Pixel* pixels;
 }Image;
 
+typedef struct {
+    double r;
+    double g;
+    double b;
+} Accumulator;
+
+typedef struct {
+    int size;
+    double *weights;
+} Kernel;
+
 typedef struct{
     double re;
     double im;
@@ -29,4 +40,8 @@ Image* load(char* filename);
 void mandelbrot(Image* image, complex z_min, complex z_max, int maxIterations);
 void julia(Image* image, complex c, complex z_min, complex z_max, int maxIterations);
 void mandelbrot_p2(Image* image, complex z_min, complex z_max, int maxIterations);
+unsigned modulo(int value, unsigned m);
+Image *grayscale(Image image);
+Image *perceptual_grayscale(Image image);
+Image *convolve(Image image, Kernel kernel);
 #endif

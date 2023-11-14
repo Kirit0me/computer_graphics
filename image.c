@@ -48,7 +48,7 @@ Image* load(char* filename)
         return NULL;
     }
     fscanf(fp, "%2s", magic);
-    if (magic[0] != 'P' && magic[1] != '6') {
+    if (magic[0] != 'P' || magic[1] != '6') {
         fprintf(stderr, "Not a valid P6 ppm file: %s\n", strerror(errno));
         free(image);
         fclose(fp);
@@ -120,40 +120,6 @@ void mod_image(Image* image)
         }
     }
 }
-
-// void mandelbrot_from_book(Image* image, complex z_min, complex z_max, int maxIterations)
-// {
-//     int h = image->height;
-//     int w = image->width;
-//     double delta_re = z_min.re + (z_max.re - z_min.re)/w;
-//     double delta_im = z_min.im + (z_max.im - z_min.im)/h;
-//     complex z;
-//     int i, j;
-//     z.re = z.im = 0.0;
-//     for(i = 0, z.re = z_min.re; i < h; ++i, z.re +=delta_re) {
-//         for(j = 0, z.im = z_min.im; j < w; ++j, z.im +=delta_im) {
-//             complex x;
-//             x.re = x.im = 0;
-
-//             int iteration = 0;
-//             while (x.re * x.re + x.im * x.im <= 4 && iteration < maxIterations) {
-//                 x.re = x.re*x.re - x.im*x.im + z.re;
-//                 x.im = 2*x.re*x.im + z.im;
-//                 iteration++;
-//             }
-//             Pixel color;
-//             if(x.re * x.re + x.im * x.im <= 4){
-//                 color.r = 0;color.g = 0;color.b = 0;
-//             } else {
-//                 color.r = (uint8_t) (1.0 + 254.99*iteration/maxIterations);
-//                 color.g = (uint8_t) (1.0 + 254.99*iteration/maxIterations);
-//                 color.b = (uint8_t) (1.0 + 254.99*iteration/maxIterations);
-//             }
-
-//             image->pixels[i * w + j] = color;
-//         }
-//     }
-// }
 
 void mandelbrot(Image* image, complex z_min, complex z_max, int maxIterations)
 {
@@ -234,6 +200,7 @@ void mandelbrot_p2(Image* image, complex z_min, complex z_max, int maxIterations
 
             image->pixels[i * w + j] = color;
         }
+        fprintf(stderr, "%f\n", i*100.0/h);
     }
 }
 
@@ -274,7 +241,86 @@ void julia(Image* image, complex c, complex z_min, complex z_max, int maxIterati
 
             image->pixels[i * w + j] = color;
         }
+        fprintf(stderr, "%f\n", i*100.0/h);
     }
 }
 
+Image *grayscale(Image image)
+{
+    Image *gray = create_image(image.width, image.height);
+    Pixel pix;
+    int index;
+	uint8_t avg;
+	for (int row = 0; row < image.height; row++) {
+		for (int col = 0; col < image.width; col++) {
+            index = row*image.width + col;
+			pix = image.pixels[index];
+			avg = (uint8_t) ((pix.r + pix.g + pix.b)/3.0);
+			gray->pixels[index] = (Pixel) {avg, avg, avg};
+		}
+	}
+    return gray;
+}
+Image *perceptual_grayscale(Image image)
+{
+    Image *gray = create_image(image.width, image.height);
+    Pixel pix;
+	uint8_t bt_601;
+    int index;
+	for (int row = 0; row < image.height; row++) {
+		for (int col = 0; col < image.width; col++) {
+            index = row*image.width + col;
+            pix = image.pixels[index];
+            bt_601 = (uint8_t) (0.2126*pix.r + 0.7152*pix.g + 0.0722*pix.b);
+			gray->pixels[index] = (Pixel) {bt_601, bt_601, bt_601};
+		}
+	}
+    return gray;
+}
+
+Image *convolve(Image image, Kernel kernel)
+{
+    Image *conv = create_image(image.width, image.height);
+    double alpha = kernel.size*kernel.size;
+    //double alpha = kernel_max(kernel) - kernel_min(kernel); //implement two funcs
+    for (int row = 0; row < image.height; row++) {
+        for (int col = 0; col < image.width - 3; col++) {
+            Accumulator accumulator = {0, 0, 0};
+            for (int r_off = -kernel.size/2; r_off <= kernel.size/2; r_off++) {
+                for (int c_off = -kernel.size/2; c_off <= kernel.size/2; c_off++) {
+                    int ir = modulo(row + r_off, image.height);
+                    int ic = modulo(col + c_off, image.width);
+                    int kr = r_off + kernel.size/2;
+                    int kc = c_off + kernel.size/2;
+                    int index = ir*image.width + ic;
+                    Pixel pixel = image.pixels[index];
+
+                    accumulator.r += pixel.r*kernel.weights[kr*kernel.size + kc];
+                    accumulator.g += pixel.g*kernel.weights[kr*kernel.size + kc];
+                    accumulator.b += pixel.b*kernel.weights[kr*kernel.size + kc];
+                    }
+                }
+
+            // Normalize the result to the range [0, 255]
+            accumulator.r = accumulator.r/alpha;
+            accumulator.g = accumulator.g/alpha;
+            accumulator.b = accumulator.b/alpha;
+
+            // Store the result in the new image
+            conv->pixels[row*image.width + col].r = accumulator.r;
+            conv->pixels[row*image.width + col].g = accumulator.g;
+            conv->pixels[row*image.width + col].b = accumulator.b;
+            }
+            fprintf(stderr, "%f\r", row*100.0/image.height);
+            fflush(stderr);
+        }
+    return conv;
+}
+unsigned modulo(int value, unsigned m)
+{
+	int mod = value % (int) m;
+	if (mod < 0)
+        mod += m;
+	return mod;
+}
 

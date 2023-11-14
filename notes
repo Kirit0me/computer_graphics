@@ -1,0 +1,33 @@
+// void mandelbrot_from_book(Image* image, complex z_min, complex z_max, int maxIterations)
+// {
+//     int h = image->height;
+//     int w = image->width;
+//     double delta_re = z_min.re + (z_max.re - z_min.re)/w;
+//     double delta_im = z_min.im + (z_max.im - z_min.im)/h;
+//     complex z;
+//     int i, j;
+//     z.re = z.im = 0.0;
+//     for(i = 0, z.re = z_min.re; i < h; ++i, z.re +=delta_re) {
+//         for(j = 0, z.im = z_min.im; j < w; ++j, z.im +=delta_im) {
+//             complex x;
+//             x.re = x.im = 0;
+
+//             int iteration = 0;
+//             while (x.re * x.re + x.im * x.im <= 4 && iteration < maxIterations) {
+//                 x.re = x.re*x.re - x.im*x.im + z.re;
+//                 x.im = 2*x.re*x.im + z.im;
+//                 iteration++;
+//             }
+//             Pixel color;
+//             if(x.re * x.re + x.im * x.im <= 4){
+//                 color.r = 0;color.g = 0;color.b = 0;
+//             } else {
+//                 color.r = (uint8_t) (1.0 + 254.99*iteration/maxIterations);
+//                 color.g = (uint8_t) (1.0 + 254.99*iteration/maxIterations);
+//                 color.b = (uint8_t) (1.0 + 254.99*iteration/maxIterations);
+//             }
+
+//             image->pixels[i * w + j] = color;
+//         }
+//     }
+// }
