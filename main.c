@@ -1,22 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "image.h"
+#include "image_processing.h"
 
 int main(int argc, char **argv)
 {
     (void)argc;
 
     Kernel box_blur;
-    box_blur.size = 11;
+    box_blur.size = 21;
     box_blur.weights = malloc(box_blur.size*box_blur.size*sizeof(double));
     for (int row = 0; row < box_blur.size; row++) {
         for (int  col = 0; col < box_blur.size; col++)
             box_blur.weights[row*box_blur.size + col] = 1.0;
     }
+
     Image* pure = load(argv[1]);
-    Image* blur = convolve(*pure, box_blur);
+    Image* blur = apply_kernel(*pure, box_blur);
+    Image* sob = sobel(*pure);
+
     save_image(*blur, "blur.ppm");
+    save_image(*sob, "sobel.ppm");
     save_image(*pure, "identity.ppm");
+
     // Image* better_broth = create_image(2160, 1440);
     // Image* mendelbroth = create_image(1000, 1000);
     // Image* julia_img = create_image(1000, 1000);

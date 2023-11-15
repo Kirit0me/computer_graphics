@@ -1,5 +1,5 @@
 @echo off
-gcc main.c image.c -O3 -o build.exe
+gcc main.c image.c image_processing.c -O3 -o build.exe
 
 if %errorlevel% neq 0 goto compile_error
 echo Compilation successful!
@@ -11,7 +11,7 @@ REM Check if build.exe was successful
 if %errorlevel% neq 0 goto build_error
 
 REM View the generated image using i_view64.exe
-i_view64.exe blur.ppm ; 
+i_view64.exe .\*.ppm ; 
 
 goto end
 
