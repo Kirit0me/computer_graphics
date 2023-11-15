@@ -242,7 +242,32 @@ void julia(Image* image, complex c, complex z_min, complex z_max, int maxIterati
 
             image->pixels[i * w + j] = color;
         }
-        fprintf(stderr, "%f\n", i*100.0/h);
+        fprintf(stderr, "%f\r", i*100.0/h);
+        fflush(stderr);
+    }
+}
+
+void generate_julia_images(const char* folderPath, int numImages)
+{
+    complex z_min = {-2.0, -2.0};
+    complex z_max = {2.0, 2.0};
+    int iterations = 100;  // Fixed iteration value for the example
+
+    for (int i = 0; i < numImages; ++i) {
+        // Create an Image structure (replace with your actual Image struct)
+        Image* image = create_image(1000, 1000);
+
+        // Set the current constant value (varying for each image)
+        complex c = {(double)i / numImages - 1.5, (double)i / numImages - 1.0};
+
+        // Call your Julia set function with the current constant value
+        julia(image, c, z_min, z_max, iterations);
+
+        // Generate the output filename based on the constant values
+        char outputFilename[100];
+        snprintf(outputFilename, sizeof(outputFilename), "%s/julia_image_%d.ppm", folderPath, i);
+        save_image(*image, outputFilename);
+        fprintf(stderr, "%d / %d \n", i, numImages);
     }
 }
 
