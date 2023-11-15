@@ -252,10 +252,10 @@ void generate_julia_images(const char* folderPath, int numImages)
     complex z_min = {-2.0, -2.0};
     complex z_max = {2.0, 2.0};
     int iterations = 100;  // Fixed iteration value for the example
+    Image* image = create_image(1440, 1080);
 
     for (int i = 0; i < numImages; ++i) {
         // Create an Image structure (replace with your actual Image struct)
-        Image* image = create_image(1000, 1000);
 
         // Set the current constant value (varying for each image)
         complex c = {(double)i / numImages - 1.5, (double)i / numImages - 1.0};
@@ -265,7 +265,7 @@ void generate_julia_images(const char* folderPath, int numImages)
 
         // Generate the output filename based on the constant values
         char outputFilename[100];
-        snprintf(outputFilename, sizeof(outputFilename), "%s/julia_image_%d.ppm", folderPath, i);
+        snprintf(outputFilename, sizeof(outputFilename), "%s/julia_image_%04d.ppm", folderPath, i);
         save_image(*image, outputFilename);
         fprintf(stderr, "%d / %d \n", i, numImages);
     }

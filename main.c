@@ -60,9 +60,8 @@ int main(int argc, char **argv)
     const char* folderPath = "julia_images";
 
     // Ensure the folder exists or create it
-    //mkdir(folderPath, 0777);
+    mkdir(folderPath, 0777);
 
-    // Generate Julia set images and save them to the folder
-    generate_julia_images(folderPath, 200);
+    generate_julia_images(folderPath, 508);
     
 }
