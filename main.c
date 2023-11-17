@@ -24,6 +24,8 @@ int main(int argc, char **argv)
     // save_image(*sob, "sobel.ppm");
     // save_image(*pure, "identity.ppm");
 
+    // Chapter 2
+
     // Image* better_broth = create_image(2160, 1440);
     // Image* mendelbroth = create_image(1000, 1000);
     // Image* julia_img = create_image(1000, 1000);
@@ -57,11 +59,16 @@ int main(int argc, char **argv)
     // save_image(*julia_img, "julia.ppm");
     //save_image(*better_broth, "betterbroth.ppm");
 
-    const char* folderPath = "julia_images";
+    // const char* folderPath = "julia_images";
+    // mkdir(folderPath, 0777);
+    // generate_julia_images(folderPath, 508);
 
-    // Ensure the folder exists or create it
-    mkdir(folderPath, 0777);
+    // Chapter 3
 
-    generate_julia_images(folderPath, 508);
-    
+    Point a = {10, 10 };
+    Point b = {1000, 500};
+
+    Image* line = create_image(1200, 1200);
+    bressenham_line(line, a, b);
+    save_image(*line, "line.ppm");
 }

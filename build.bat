@@ -11,7 +11,8 @@ REM Check if build.exe was successful
 if %errorlevel% neq 0 goto build_error
 
 REM View the generated image using i_view64.exe
-ffmpeg -framerate 16 -i ".\julia_images\julia_image_%04d.ppm" -vf tblend, gblur -pix_fmt yuv420p -c:v libx265 out.mp4 ; 
+i_view64.exe line.ppm ;
+REM ffmpeg -framerate 16 -i ".\julia_images\julia_image_%04d.ppm" -vf tblend, gblur -pix_fmt yuv420p -c:v libx265 out.mp4 ; 
 
 goto end
 
