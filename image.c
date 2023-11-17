@@ -336,10 +336,10 @@ void draw_circle(Image* image, Point center, int radius, Pixel color)
     int x = 0, y = radius;
     int p = 1 - radius;
 
-    setPixel(image, center.x, center.y + radius, color);
-    setPixel(image, center.x, center.y - radius, color);
-    setPixel(image, center.x + radius, center.y, color);
-    setPixel(image, center.x - radius, center.y, color);
+    set_pixel(image, center.x, center.y + radius, color);
+    set_pixel(image, center.x, center.y - radius, color);
+    set_pixel(image, center.x + radius, center.y, color);
+    set_pixel(image, center.x - radius, center.y, color);
 
     while (x <= y) {
         if (p < 0) {
@@ -350,15 +350,14 @@ void draw_circle(Image* image, Point center, int radius, Pixel color)
         }
         x++;
 
-        // Draw points in all eight octants
-        setPixel(image, center.x + x, center.y + y, color);
-        setPixel(image, center.x - x, center.y + y, color);
-        setPixel(image, center.x + x, center.y - y, color);
-        setPixel(image, center.x - x, center.y - y, color);
-        setPixel(image, center.x + y, center.y + x, color);
-        setPixel(image, center.x - y, center.y + x, color);
-        setPixel(image, center.x + y, center.y - x, color);
-        setPixel(image, center.x - y, center.y - x, color);
+        set_pixel(image, center.x + x, center.y + y, color);
+        set_pixel(image, center.x - x, center.y + y, color);
+        set_pixel(image, center.x + x, center.y - y, color);
+        set_pixel(image, center.x - x, center.y - y, color);
+        set_pixel(image, center.x + y, center.y + x, color);
+        set_pixel(image, center.x - y, center.y + x, color);
+        set_pixel(image, center.x + y, center.y - x, color);
+        set_pixel(image, center.x - y, center.y - x, color);
     }
 }
 

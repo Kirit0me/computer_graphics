@@ -75,6 +75,6 @@ int main(int argc, char **argv)
     save_image(*line, "line.ppm");
     
     Image* circle = create_image(1200, 1200);
-    drawCircle(circle, (Point){circle->width / 2, circle->height / 2}, 20, (Pixel){255, 0, 0});
+    draw_circle(circle, (Point){circle->width / 2, circle->height / 2}, 200, (Pixel){255, 0, 0});
     save_image(*circle, "circle.ppm");
 }
