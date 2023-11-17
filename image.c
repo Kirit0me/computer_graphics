@@ -324,3 +324,41 @@ void bressenham_circle_midpoint(Image* image, int r, Pixel color)
     }
 }
 
+static void set_pixel(Image* image, int x, int y, Pixel color) 
+{
+    if (x >= 0 && x < image->width && y >= 0 && y < image->height) {
+        image->pixels[y * image->width + x] = color;
+    }
+}
+
+void draw_circle(Image* image, Point center, int radius, Pixel color)
+{
+    int x = 0, y = radius;
+    int p = 1 - radius;
+
+    setPixel(image, center.x, center.y + radius, color);
+    setPixel(image, center.x, center.y - radius, color);
+    setPixel(image, center.x + radius, center.y, color);
+    setPixel(image, center.x - radius, center.y, color);
+
+    while (x <= y) {
+        if (p < 0) {
+            p = p + 2 * x + 3;
+        } else {
+            p = p + 2 * (x - y) + 5;
+            y--;
+        }
+        x++;
+
+        // Draw points in all eight octants
+        setPixel(image, center.x + x, center.y + y, color);
+        setPixel(image, center.x - x, center.y + y, color);
+        setPixel(image, center.x + x, center.y - y, color);
+        setPixel(image, center.x - x, center.y - y, color);
+        setPixel(image, center.x + y, center.y + x, color);
+        setPixel(image, center.x - y, center.y + x, color);
+        setPixel(image, center.x + y, center.y - x, color);
+        setPixel(image, center.x - y, center.y - x, color);
+    }
+}
+
