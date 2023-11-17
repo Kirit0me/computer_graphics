@@ -65,10 +65,15 @@ int main(int argc, char **argv)
 
     // Chapter 3
 
-    Point a = {10, 10 };
-    Point b = {1000, 500};
+    Point a = {100, 500};
+    Point b = {10, 10};
+    Pixel red;
+    red.r = 255;red.b = 0, red.g = 0;
 
     Image* line = create_image(1200, 1200);
-    bressenham_line(line, a, b);
+    bressenham_line(line, a, b, red);
     save_image(*line, "line.ppm");
+    // Image* circle = create_image(1200, 1200);
+    // bressenham_circle_midpoint(circle, 300, red);
+    // save_image(*circle, "circle.ppm");
 }

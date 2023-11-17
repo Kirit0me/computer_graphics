@@ -46,6 +46,8 @@ void mandelbrot(Image* image, complex z_min, complex z_max, int maxIterations);
 void julia(Image* image, complex c, complex z_min, complex z_max, int maxIterations);
 void mandelbrot_p2(Image* image, complex z_min, complex z_max, int maxIterations);
 void generate_julia_images(const char* folderPath, int numImages);
-void bressenham_line(Image* image, Point a, Point b);
+void bressenham_line(Image* image, Point a, Point b, Pixel color);
+void bressenham_circle(Image* image, int r, Pixel color);
+void bressenham_circle_midpoint(Image* image, int r, Pixel color);
 
 #endif

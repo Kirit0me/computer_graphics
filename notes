@@ -31,3 +31,26 @@
 //         }
 //     }
 // }
+
+// void bressenham_line_from_book(Image* image, Point a, Point b)
+// {
+//     Pixel color;
+//     int x = a.x, y = a.y;
+//     int dx = b.x - a.x, dy = b.y - a.y;
+//     int dt = 2*(dy - dx), ds = 2*dy;
+//     int d = 2*dy - dx;
+//     color.r = 255; color.g = 255; color.b = 255;
+//     image->pixels[y*image->width + x] = color;
+//     while(x < b.x) {
+//         x++;
+//         if(d < 0)
+//             d = d + ds;
+//         else {
+//             y++;
+//             d = d + dt;
+//         }
+//         color.r = 255; color.g = 255; color.b = 255;
+//         image->pixels[y*image->width + x] = color;
+//     }
+
+// }

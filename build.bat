@@ -1,5 +1,5 @@
 @echo off
-gcc main.c image.c image_processing.c -O3 -o build.exe
+gcc main.c image.c image_processing.c -Wall -Wextra -Wno-unused-parameter -O3 -o build.exe
 
 if %errorlevel% neq 0 goto compile_error
 echo Compilation successful!

@@ -96,7 +96,6 @@ void hello_world(Image* image)
         for(int j = 0; j<w; ++j) {
             double re = 255.99*(i*1.0)/(h-1);
             double ge = 255.99*(j*1.0)/(w-1);
-            double be = 0;
 
             image->pixels[i*w + j].r = re;
             image->pixels[i*w + j].g = ge;
@@ -271,26 +270,57 @@ void generate_julia_images(const char* folderPath, int numImages)
     }
 }
 
-void bressenham_line(Image* image, Point a, Point b)
+void bressenham_line(Image* image, Point a, Point b, Pixel color)
 {
-    Pixel color;
     int x = a.x, y = a.y;
-    int dx = b.x - a.x, dy = b.y - a.y;
-    int dt = 2*(dy - dx), ds = 2*dy;
-    int d = 2*dy - dx;
-    color.r = 255; color.g = 255; color.b = 255;
-    image->pixels[y*image->width + x] = color;
-    while(x < b.x) {
-        x++;
-        if(d < 0)
-            d = d + ds;
-        else {
-            y++;
-            d = d + dt;
-        }
-        color.r = 255; color.g = 255; color.b = 255;
-        image->pixels[y*image->width + x] = color;
-    }
+    int dx = abs(b.x - a.x);
+    int dy = -abs(b.y - a.y);
+    int sx = (a.x < b.x) ? 1 : -1;
+    int sy = (a.y < b.y) ? 1 : -1;
+    int err = dy + dx, e;
 
+    while (x != b.x || y != b.y) {
+        image->pixels[y * image->width + x] = color;
+		e = 2*err;
+		if (e >= dy) {
+			if (x == b.x) break;
+			err += dy;
+			x += sx;
+		}
+		if (e <= dx) {
+			if (y == b.y) break;
+			err += dx;
+			y += sy;
+		}
+	}
+}
+
+
+void bressenham_circle(Image* image, int r, Pixel color)
+{
+    int x = 0, y = r, d = 3-2*r;
+    while(x<=y) {
+        image->pixels[y*image->width + x] = color;
+        if(d<0) d = d + 4*x + 6;
+        else {
+            d = d + 4*(x-y) + 10;
+            y--;
+        }
+        x++;
+    }
+}
+
+void bressenham_circle_midpoint(Image* image, int r, Pixel color)
+{
+    int x = 0, y = r, p = 1-r;
+    while(x<=y) {
+        image->pixels[y*image->width + x] = color;
+        if(p<0) p = p + 2*x + 3;
+        else {
+            p = p + 2*(x-y) + 5;
+            y--;
+        }
+        x++;
+    }
 }
 
