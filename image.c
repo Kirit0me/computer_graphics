@@ -389,3 +389,38 @@ void draw_koch_snowflake(Image* image, Point a, Point b, Point c, int depth, Pix
     draw_koch_curve(image, c, a, depth, color);
 }
 
+void fractangle(Image* image, Point a, Point b, Point c, int depth, Pixel color) 
+{
+    if (depth == 0) {
+        set_pixel(image, a.x, a.y, color);
+        set_pixel(image, b.x, b.y, color);
+        set_pixel(image, c.x, c.y, color);
+    } else {
+        Point ab = {(a.x + b.x) / 2, (a.y + b.y) / 2};
+        Point bc = {(b.x + c.x) / 2, (b.y + c.y) / 2};
+        Point ca = {(c.x + a.x) / 2, (c.y + a.y) / 2};
+
+        fractangle(image, ca, a, ab, depth - 1, color);
+        fractangle(image, ab, b, bc, depth - 1, color);
+        fractangle(image, bc, c, ca, depth - 1, color);
+    }
+}
+
+void sierpinski(Image* image, Point a, Point b, Point c, int depth, Pixel color)
+{
+    if (depth == 0) {
+        bressenham_line(image, a, b, color);
+        bressenham_line(image, b, c, color);
+        bressenham_line(image, c, a, color);
+    } else {
+        Point ab = {(a.x + b.x) / 2, (a.y + b.y) / 2};
+        Point bc = {(b.x + c.x) / 2, (b.y + c.y) / 2};
+        Point ca = {(c.x + a.x) / 2, (c.y + a.y) / 2};
+
+        sierpinski(image, a, ab, ca, depth - 1, color);
+        sierpinski(image, ab, b, bc, depth - 1, color);
+        sierpinski(image, ca, bc, c, depth - 1, color);
+    }
+}
+
+

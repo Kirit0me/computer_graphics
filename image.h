@@ -54,5 +54,7 @@ void bressenham_circle_midpoint(Image* image, int r, Pixel color);
 
 void draw_koch_curve(Image* image, Point a, Point b, int depth, Pixel color);
 void draw_koch_snowflake(Image* image, Point a, Point b, Point c, int depth, Pixel color);
+void fractangle(Image* image, Point a, Point b, Point c, int depth, Pixel color);
+void sierpinski(Image* image, Point a, Point b, Point c, int depth, Pixel color);
 
 #endif

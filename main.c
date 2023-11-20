@@ -90,4 +90,12 @@ int main(int argc, char **argv)
     Pixel silver = {200, 200, 200};
     draw_koch_snowflake(snow_flake, x, y, z, 6, silver);
     save_image(*snow_flake, "flakes_de_la_snow.ppm");
+
+    Image* fract_angle = create_image(1001, 1001);
+    fractangle(fract_angle, x, y, z, 10, red);
+    save_image(*fract_angle, "fractangle.ppm");
+
+    Image* sier = create_image(1001, 1001);
+    sierpinski(sier, x, y, z, 8, silver);
+    save_image(*sier, "sierpinki.ppm");
 }
