@@ -82,4 +82,12 @@ int main(int argc, char **argv)
     draw_koch_curve(coke, a, b, 6, red);
     save_image(*coke, "cococola.ppm");
 
+    Point x = {400, 50};
+    Point y = {150, 700};
+    Point z = {650, 700};
+    
+    Image* snow_flake = create_image(1001, 1001);
+    Pixel silver = {200, 200, 200};
+    draw_koch_snowflake(snow_flake, x, y, z, 6, silver);
+    save_image(*snow_flake, "flakes_de_la_snow.ppm");
 }

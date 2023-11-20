@@ -382,3 +382,10 @@ void draw_koch_curve(Image* image, Point a, Point b, int depth, Pixel color)
     }
 }
 
+void draw_koch_snowflake(Image* image, Point a, Point b, Point c, int depth, Pixel color)
+{
+    draw_koch_curve(image, a, b, depth, color);
+    draw_koch_curve(image, b, c, depth, color);
+    draw_koch_curve(image, c, a, depth, color);
+}
+
