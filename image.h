@@ -52,5 +52,7 @@ void bressenham_line(Image* image, Point a, Point b, Pixel color);
 void bressenham_circle(Image* image, int r, Pixel color);
 void bressenham_circle_midpoint(Image* image, int r, Pixel color);
 
+void draw_koch_curve(Image* image, Point a, Point b, int depth, Pixel color);
+
 
 #endif

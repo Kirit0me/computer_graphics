@@ -65,16 +65,21 @@ int main(int argc, char **argv)
 
     // Chapter 3
 
-    Point a = {100, 500};
-    Point b = {10, 1000};
+    Point a = {0, 0};
+    Point b = {1000, 1000};
     Pixel red;
     red.r = 255;red.b = 0, red.g = 0;
 
-    Image* line = create_image(1200, 1200);
-    bressenham_line(line, a, b, red);
-    save_image(*line, "line.ppm");
+    // Image* line = create_image(1200, 1200);
+    // bressenham_line(line, a, b, red);
+    // save_image(*line, "line.ppm");
     
-    Image* circle = create_image(1200, 1200);
-    draw_circle(circle, (Point){circle->width / 2, circle->height / 2}, 200, (Pixel){255, 0, 0});
-    save_image(*circle, "circle.ppm");
+    // Image* circle = create_image(1200, 1200);
+    // draw_circle(circle, (Point){circle->width / 2, circle->height / 2}, 200, (Pixel){255, 0, 0});
+    // save_image(*circle, "circle.ppm");
+    
+    Image* coke = create_image(1001, 1001);
+    draw_koch_curve(coke, a, b, 6, red);
+    save_image(*coke, "cococola.ppm");
+
 }

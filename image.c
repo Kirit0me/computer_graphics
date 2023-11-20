@@ -361,3 +361,24 @@ void draw_circle(Image* image, Point center, int radius, Pixel color)
     }
 }
 
+void draw_koch_curve(Image* image, Point a, Point b, int depth, Pixel color) 
+{
+    if (depth == 0) {
+        bressenham_line(image, a, b, color);
+    } else {
+        Point p1 = a;
+        Point p2 = {a.x + (b.x - a.x) / 3, a.y + (b.y - a.y) / 3};
+        Point p3 = {
+            (int)(0.5 * (a.x + b.x) + sqrt(3) / 6 * (a.y - b.y)),
+            (int)(0.5 * (a.y + b.y) + sqrt(3) / 6 * (b.x - a.x))
+        };
+        Point p4 = {a.x + 2 * (b.x - a.x) / 3, a.y + 2 * (b.y - a.y) / 3};
+        Point p5 = b;
+
+        draw_koch_curve(image, p1, p2, depth - 1, color);
+        draw_koch_curve(image, p2, p3, depth - 1, color);
+        draw_koch_curve(image, p3, p4, depth - 1, color);
+        draw_koch_curve(image, p4, p5, depth - 1, color);
+    }
+}
+
